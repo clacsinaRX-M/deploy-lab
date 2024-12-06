@@ -1,0 +1,34 @@
+name: test-k8s-permissions
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-permissions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up kubeconfig
+        uses: azure/k8s-set-context@v4
+        with:
+          method: service-account
+          k8s-url: https://54.215.189.237:6443     # Replace this IP address with the results of curl http://checkip.amazonaws.com
+          k8s-secret: | # Replace the example secret below with the secret from your cluster; it should be indented by 12 spaces
+            apiVersion: v1
+            data:
+              ca.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSURCVENDQWUyZ0F3SUJBZ0lJSHFNRnkrSHY2b2d3RFFZSktvWklodmNOQVFFTEJRQXdGVEVUTUJFR0ExVUUKQXhNS2EzVmlaWEp1WlhSbGN6QWVGdzB5TkRFeU1ETXdNVFV5TlROYUZ3MHpOREV5TURFd01UVTNOVE5hTUJVeApFekFSQmdOVkJBTVRDbXQxWW1WeWJtVjBaWE13Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLCkFvSUJBUURWMHNKSTNxeGpHUi9PdVp6ZEptbUJqaUUxVHl2TktKSVZoZUxENlJqcjJ5S3VnUlBXZmt4Wk1NZkMKSHpremV1ZkRkcnFJR0JCaWZlSE9DbkZkL1JKaUlxS1cwZVJNVFVDNy93TXQyN3ZQNmpCem5zV0JxL2Y0OGtLSgowV01xR3VlVjFnaklrMFhFeTAyZkk4bEI4NFRDK2Z4L2hJOEpkMWR4bW9kNzJrTlBhRCtwMFFaNDcxZVZnTXZpCnpXK1hIN0ZmWjd0WFFYNi9CaDdxQXVWR3ZnMm41U0N0M1QyZ2lBOGFxOS8rVVRDL1lhZytFNk9MQ3ROdVAxUm8KT1FtWTAxNVFTSXJCdHlFa0J5SnRwZmZ1cTR4TFl2dXcwc2xrMExXdWJmaUlid20xU0dvS1hyRU8rZnNvdW9DbQp2V3hGRkc4UTRnR2RTVVpNQStka0xkUC9ubTZWQWdNQkFBR2pXVEJYTUE0R0ExVWREd0VCL3dRRUF3SUNwREFQCkJnTlZIUk1CQWY4RUJUQURBUUgvTUIwR0ExVWREZ1FXQkJSa2ZaTFBqS0ZXeTh2VTV4d1FJOURzMGdaUG1EQVYKQmdOVkhSRUVEakFNZ2dwcmRXSmxjbTVsZEdWek1BMEdDU3FHU0liM0RRRUJDd1VBQTRJQkFRQlF1RjZaM3kyaAoxdUZyZGp5UHRzSkptaExvVXJwUUhTTDExa0lCUE5UL0paSlFZZzVNVjdJR0tHamdIRk1UNHQ5WTFFSitIS3ZLCnArbUN0aUdpam84b2hmNmlHUmRFWDl2TEFpZ1NoMGlhdEsxVGlpZ2NQN3pmdnVPdVFndVdYeWU3NWRrQ2x1UDYKRWJHRlVEaCtZVlRmNWtURm95dmRFNFIxcG96QTVBTk9KMm9tK3ZGeTJJWmtrcGFYK3ZKZ0FHMnJzdFVJSzNTUgpYVHh2YzhnSVJoNTA2YW5HQUNrRjc5MlR0d3JhdnlxdlIvSHhaRUFqcjN4VVlrNmJjRmhFYzRNUG5DY29HZlh1Ck8rRkZvM0lDSXNqUlNMVXhJODVQT1pVNDk5K1NJWU9qT3dMVWgwam1MWkJoL1Bqa05sc2d2UWtVV2FscDFNYVgKM0hHOHdCQkpHRzllCi0tLS0tRU5EIENFUlRJRklDQVRFLS0tLS0K
+              namespace: ZGVmYXVsdA==
+              token: ZXlKaGJHY2lPaUpTVXpJMU5pSXNJbXRwWkNJNkltd3plVEJKV1VORWNtUjJXRjg0TFVjNU15MTFXREJ3UlU5b1kwcHFlRlZCTjBabVNrUkVjV1JWUXpBaWZRLmV5SnBjM01pT2lKcmRXSmxjbTVsZEdWekwzTmxjblpwWTJWaFkyTnZkVzUwSWl3aWEzVmlaWEp1WlhSbGN5NXBieTl6WlhKMmFXTmxZV05qYjNWdWRDOXVZVzFsYzNCaFkyVWlPaUprWldaaGRXeDBJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpXTnlaWFF1Ym1GdFpTSTZJbWRvWVMxellTMXpaV055WlhRaUxDSnJkV0psY201bGRHVnpMbWx2TDNObGNuWnBZMlZoWTJOdmRXNTBMM05sY25acFkyVXRZV05qYjNWdWRDNXVZVzFsSWpvaVoyaGhJaXdpYTNWaVpYSnVaWFJsY3k1cGJ5OXpaWEoyYVdObFlXTmpiM1Z1ZEM5elpYSjJhV05sTFdGalkyOTFiblF1ZFdsa0lqb2lNV0UzTlRneVpqQXRObUkwTmkwMFlUWm1MVGhsWkdFdFlXSmpZVGRtWldVeVpEYzRJaXdpYzNWaUlqb2ljM2x6ZEdWdE9uTmxjblpwWTJWaFkyTnZkVzUwT21SbFptRjFiSFE2WjJoaEluMC50MmdIQWZkVlZuNV9KNHVVd281RkM0ZEpVX1RVZklNNEZmSDJDSkpOOHpza01nOUZ0R0ZHOTgzWXY1TUdDQmpRWjZrNTVLMDllWGNuRnFndW4ybjlqVnF6c0N5bVlEN0plX2tZc3UxOFo5dWlNN2FhcV93R29DRFVoSmlJaWdwX3EweklobFhQOGtRWlRCMlk1b0ZvSGR5XzVFNFpqaTJyeGc0bFhQLWlGcUJDTDMzcmNuSE9UM3Nrc2hnbnc4LWtHdkl3NHFtcTVMUk9IMFZrd2lWQmF0ejZRZkhCQ0dPSFNWZk9aRl9oU0huM0hKeUM2N3pNbGpoOXZLVWVKeUpnMG00Nk05OHdQeTVaVUlEVUl0VWNtVFJOeWRXbnlTOEJxT0hOUU9rYm9xX3gzR1o3ZWN1Y3FOOHlDZmNpT0tPVVU3MWVBZEpSaGdRaGJCazBqWFBCa3c=
+            kind: Secret
+            metadata:
+              annotations:
+                kubectl.kubernetes.io/last-applied-configuration: |
+                  {"apiVersion":"v1","kind":"Secret","metadata":{"annotations":{"kubernetes.io/service-account.name":"gha"},"name":"gha-sa-secret","namespace":"default"},"type":"kubernetes.io/service-account-token"}
+                kubernetes.io/service-account.name: gha
+                kubernetes.io/service-account.uid: 1a7582f0-6b46-4a6f-8eda-abca7fee2d78
+              creationTimestamp: "2024-12-06T15:54:59Z"
+              name: gha-sa-secret
+              namespace: default
+              resourceVersion: "866355"
+              uid: 0db27ba9-13c9-4870-b297-8c6041014302
+      - name: Get pods
+        run: kubectl get pods -n default
