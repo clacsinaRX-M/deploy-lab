@@ -1,7 +1,12 @@
-name: test-k8s-permissions
+name: deploy-stuff
 
 on:
   workflow_dispatch:
+    inputs:                 # Add the inputs block to the trigger
+      environment:
+        description: 'Environment where Kubernetes resources will be deployed'
+        type: environment
+        required: true
 
 jobs:
   deploy-stuff:
