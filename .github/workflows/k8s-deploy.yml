@@ -53,5 +53,5 @@ jobs:
           manifests: |
               manifests/dep.yaml
               manifests/svc.yaml
-          namespace: default
+          namespace: ${{ inputs.environment }}     # Replace the 'default' string with the variable
           pull-images: false
